@@ -56,33 +56,33 @@ class Ready {
             }
         }
 
-        // // PRINT TEXT
-        // this.index.ctx.fillStyle = 'rgb(255, 255, 255)';
-        // this.index.ctx.textBaseline = 'bottom';
+        // PRINT TEXT
+        this.index.ctx.fillStyle = 'rgb(255, 255, 255)';
+        this.index.ctx.textBaseline = 'bottom';
 
-        // this.index.ctx.textAlign = 'left';
-        // this.index.ctx.font = `${size}px Arial`;
+        this.index.ctx.textAlign = 'left';
+        this.index.ctx.font = `${size}px Arial`;
         // this.index.ctx.fillText(this.index.debug ? 'debug:' : '', w / 2 + (6) * size, h / 2 + (1) * size);
-        // this.index.ctx.fillText('score:', w / 2 + (6) * size, h / 2 + (4) * size);
-        // this.index.ctx.fillText('time:', w / 2 + (6) * size, h / 2 + (7) * size);
-        // this.index.ctx.font = `${size * 2}px Arial`;
+        this.index.ctx.fillText('score:', w / 2 + (6) * size, h / 2 + (4) * size);
+        this.index.ctx.fillText('time:', w / 2 + (6) * size, h / 2 + (7) * size);
+        this.index.ctx.font = `${size * 2}px Arial`;
         // this.index.ctx.fillText(this.index.debug, w / 2 + (6) * size, h / 2 + (3) * size);
-        // this.index.ctx.fillText(0, w / 2 + (6) * size, h / 2 + (6) * size);
-        // this.index.ctx.fillText('0.000', w / 2 + (6) * size, h / 2 + (9) * size);
+        this.index.ctx.fillText(0, w / 2 + (6) * size, h / 2 + (6) * size);
+        this.index.ctx.fillText('0.000', w / 2 + (6) * size, h / 2 + (9) * size);
 
-        // this.index.ctx.textAlign = 'right';
-        // this.index.ctx.font = `${size}px Arial`;
-        // this.index.ctx.fillText('pieces:', w / 2 + (-6) * size, h / 2 + (1) * size);
-        // this.index.ctx.fillText('lines:', w / 2 + (-6) * size, h / 2 + (4) * size);
-        // this.index.ctx.fillText('level:', w / 2 + (-6) * size, h / 2 + (7) * size);
-        // this.index.ctx.font = `${size * 2}px Arial`;
-        // this.index.ctx.fillText(0, w / 2 + (-6) * size, h / 2 + (3) * size);
-        // this.index.ctx.fillText(0, w / 2 + (-6) * size, h / 2 + (6) * size);
-        // this.index.ctx.fillText(this.index.game.stats.level, w / 2 + (-6) * size, h / 2 + (9) * size);
+        this.index.ctx.textAlign = 'right';
+        this.index.ctx.font = `${size}px Arial`;
+        this.index.ctx.fillText('pieces:', w / 2 + (-6) * size, h / 2 + (1) * size);
+        this.index.ctx.fillText('lines:', w / 2 + (-6) * size, h / 2 + (4) * size);
+        this.index.ctx.fillText('level:', w / 2 + (-6) * size, h / 2 + (7) * size);
+        this.index.ctx.font = `${size * 2}px Arial`;
+        this.index.ctx.fillText(0, w / 2 + (-6) * size, h / 2 + (3) * size);
+        this.index.ctx.fillText(0, w / 2 + (-6) * size, h / 2 + (6) * size);
+        this.index.ctx.fillText(this.index.game.stats.level, w / 2 + (-6) * size, h / 2 + (9) * size);
 
-        // this.index.ctx.textAlign = 'center';
-        // this.index.ctx.font = `${size * 2}px Arial`;
-        // this.index.ctx.fillText(this.index.game.stats.mode, w / 2 + (0) * size, h / 2 + (12) * size);
+        this.index.ctx.textAlign = 'center';
+        this.index.ctx.font = `${size * 2}px Arial`;
+        this.index.ctx.fillText(this.index.game.stats.mode, w / 2 + (0) * size, h / 2 + (12) * size);
 
         // PRINT COUNTDOWN
         this.index.ctx.beginPath();

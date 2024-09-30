@@ -127,31 +127,31 @@ class Play {
         this.index.ctx.textBaseline = 'bottom';
 
         this.index.ctx.textAlign = 'left';
-        // this.index.ctx.font = `${size}px Arial`;
+        this.index.ctx.font = `${size}px Arial`;
         // this.index.ctx.fillText(this.index.debug ? 'debug:' : '', w / 2 + (6) * size, h / 2 + (1) * size);
-        // this.index.ctx.fillText('score:', w / 2 + (6) * size, h / 2 + (4) * size);
-        // this.index.ctx.fillText('time:', w / 2 + (6) * size, h / 2 + (7) * size);
+        this.index.ctx.fillText('score:', w / 2 + (6) * size, h / 2 + (4) * size);
+        this.index.ctx.fillText('time:', w / 2 + (6) * size, h / 2 + (7) * size);
         this.index.ctx.font = `${size * 2}px Arial`;
         // this.index.ctx.fillText(this.index.debug, w / 2 + (6) * size, h / 2 + (3) * size);
-        // this.index.ctx.fillText(this.index.game.stats.score, w / 2 + (6) * size, h / 2 + (6) * size);
+        this.index.ctx.fillText(this.index.game.stats.score, w / 2 + (6) * size, h / 2 + (6) * size);
         this.index.ctx.fillText(new Date(current_time - this.index.game.stats.time).toISOString().replace(/.*T[0:]{0,7}|Z$/g, ''), w / 2 + (6) * size, h / 2 + (9) * size);
 
-        // this.index.ctx.textAlign = 'right';
-        // this.index.ctx.font = `${size}px Arial`;
-        // this.index.ctx.fillText((this.index.game.b2b > 0) ? `${this.index.game.b2b} B2B` : '', w / 2 + (-6) * size, h / 2 + (-5) * size);
-        // this.index.ctx.fillText(this.index.game.last_clear, w / 2 + (-6) * size, h / 2 + (-4) * size);
-        // this.index.ctx.fillText((this.index.game.combo > 0) ? `${this.index.game.combo} combo` : '', w / 2 + (-6) * size, h / 2 + (-3) * size);
-        // this.index.ctx.fillText('pieces:', w / 2 + (-6) * size, h / 2 + (1) * size);
-        // this.index.ctx.fillText('lines:', w / 2 + (-6) * size, h / 2 + (4) * size);
-        // this.index.ctx.fillText('level:', w / 2 + (-6) * size, h / 2 + (7) * size);
-        // this.index.ctx.font = `${size * 2}px Arial`;
-        // this.index.ctx.fillText(this.index.game.stats.pieces, w / 2 + (-6) * size, h / 2 + (3) * size);
-        // this.index.ctx.fillText(this.index.game.stats.lines, w / 2 + (-6) * size, h / 2 + (6) * size);
-        // this.index.ctx.fillText(this.index.game.stats.level, w / 2 + (-6) * size, h / 2 + (9) * size);
+        this.index.ctx.textAlign = 'right';
+        this.index.ctx.font = `${size}px Arial`;
+        this.index.ctx.fillText((this.index.game.b2b > 0) ? `${this.index.game.b2b} B2B` : '', w / 2 + (-6) * size, h / 2 + (-5) * size);
+        this.index.ctx.fillText(this.index.game.last_clear, w / 2 + (-6) * size, h / 2 + (-4) * size);
+        this.index.ctx.fillText((this.index.game.combo > 0) ? `${this.index.game.combo} combo` : '', w / 2 + (-6) * size, h / 2 + (-3) * size);
+        this.index.ctx.fillText('pieces:', w / 2 + (-6) * size, h / 2 + (1) * size);
+        this.index.ctx.fillText('lines:', w / 2 + (-6) * size, h / 2 + (4) * size);
+        this.index.ctx.fillText('level:', w / 2 + (-6) * size, h / 2 + (7) * size);
+        this.index.ctx.font = `${size * 2}px Arial`;
+        this.index.ctx.fillText(this.index.game.stats.pieces, w / 2 + (-6) * size, h / 2 + (3) * size);
+        this.index.ctx.fillText(this.index.game.stats.lines, w / 2 + (-6) * size, h / 2 + (6) * size);
+        this.index.ctx.fillText(this.index.game.stats.level, w / 2 + (-6) * size, h / 2 + (9) * size);
 
-        // this.index.ctx.textAlign = 'center';
-        // this.index.ctx.font = `${size * 2}px Arial`;
-        // this.index.ctx.fillText(this.index.game.stats.mode, w / 2 + (0) * size, h / 2 + (12) * size);
+        this.index.ctx.textAlign = 'center';
+        this.index.ctx.font = `${size * 2}px Arial`;
+        this.index.ctx.fillText(this.index.game.stats.mode, w / 2 + (0) * size, h / 2 + (12) * size);
     }
 
     keyDownHandler(e, current_time) {

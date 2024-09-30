@@ -19,13 +19,13 @@ class Menu {
     }
 
     render(current_time, w, h, size) {
-        // // PRINT TEXT
-        // this.index.ctx.fillStyle = 'rgb(255, 255, 255)';
-        // this.index.ctx.textBaseline = 'bottom';
-        // this.index.ctx.textAlign = 'center';
-        // this.index.ctx.font = `${size * 2}px Arial`;
-        // this.index.ctx.fillText('TETRADATS', w / 2 + (0) * size, h / 2 + (-8) * size);
-        // this.index.ctx.fillText(this.mode, w / 2 + (0) * size, h / 2 + (12) * size);
+        // PRINT TEXT
+        this.index.ctx.fillStyle = 'rgb(255, 255, 255)';
+        this.index.ctx.textBaseline = 'bottom';
+        this.index.ctx.textAlign = 'center';
+        this.index.ctx.font = `${size * 2}px Arial`;
+        this.index.ctx.fillText('TETRADATS', w / 2 + (0) * size, h / 2 + (-8) * size);
+        this.index.ctx.fillText(this.mode, w / 2 + (0) * size, h / 2 + (12) * size);
 
         // PRINT BUTTONS
         this.index.ctx.beginPath();
