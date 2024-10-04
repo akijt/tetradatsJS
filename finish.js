@@ -1,5 +1,6 @@
-class Finish {
+class Finish extends Screen {
     constructor(index) {
+        super();
         this.index = index;
         this.result = '';
         if (!this.index.game.lose) {
@@ -15,17 +16,6 @@ class Finish {
                 this.result = this.index.game.stats.score;
             }
         }
-    }
-
-    enter_state() {
-        this.index.state_stack.push(this);
-        if (this.index.state_stack.length > 1) {
-            this.prev_state = this.index.state_stack[this.index.state_stack.length - 2]
-        }
-    }
-
-    exit_state() {
-        this.index.state_stack.pop();
     }
 
     update(current_time) {

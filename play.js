@@ -1,17 +1,7 @@
-class Play {
+class Play extends Screen {
     constructor(index) {
+        super();
         this.index = index;
-    }
-
-    enter_state() {
-        this.index.state_stack.push(this);
-        if (this.index.state_stack.length > 1) {
-            this.prev_state = this.index.state_stack[this.index.state_stack.length - 2]
-        }
-    }
-
-    exit_state() {
-        this.index.state_stack.pop();
     }
 
     update(current_time) {

@@ -1,3 +1,44 @@
+class Screen {
+    constructor(index) {
+        this.index = index;
+    }
+
+    enter_state() {
+        this.index.state_stack.push(this);
+        if (this.index.state_stack.length > 1) {
+            this.prev_state = this.index.state_stack[this.index.state_stack.length - 2]
+        }
+    }
+
+    exit_state() {
+        this.index.state_stack.pop();
+    }
+
+    update(current_time) {
+        console.error('update not implemented')
+    }
+
+    render(current_time, w, h, size) {
+        console.error('render not implemented')
+    }
+
+    keyDownHandler(e, current_time) {
+        console.error('keyDownHandler not implemented')
+    }
+
+    keyUpHandler(e, current_time) {
+        console.error('keyUpHandler not implemented')
+    }
+
+    clickHandler(e, current_time, w, h, size) {
+        console.error('clickHandler not implemented')
+    }
+
+    moveHandler(e, current_time, w, h, size) {
+        console.error('moveHandler not implemented')
+    }
+}
+
 class Tetris {
     constructor() {
         this.minos = {'i': [[[0, 2], [1, 2], [2, 2], [3, 2]], [[2, 0], [2, 1], [2, 2], [2, 3]], [[0, 1], [1, 1], [2, 1], [3, 1]], [[1, 0], [1, 1], [1, 2], [1, 3]]],

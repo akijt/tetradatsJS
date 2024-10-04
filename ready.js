@@ -1,18 +1,8 @@
-class Ready {
+class Ready extends Screen {
     constructor(index, current_time) {
+        super();
         this.index = index;
         this.countdown = current_time;
-    }
-
-    enter_state() {
-        this.index.state_stack.push(this);
-        if (this.index.state_stack.length > 1) {
-            this.prev_state = this.index.state_stack[this.index.state_stack.length - 2]
-        }
-    }
-
-    exit_state() {
-        this.index.state_stack.pop();
     }
 
     update(current_time) {

@@ -1,5 +1,7 @@
 // document.write();
 // window.alert();
+// console.log();
+// console.error();
 
 class Index {
     constructor() {
