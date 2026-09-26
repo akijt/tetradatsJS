@@ -81,8 +81,8 @@ No build tools or package managers required.
 
 ```
 ├── index.html        # Canvas container and script loading order
-├── index.js          # Core Engine and Screen base classes
-├── class.js          # Tetradats core holding game state and update logic
+├── engine.js         # Core Engine and Screen base classes
+├── tetra.js          # Tetradats core holding game state and update logic
 ├── main.js           # Engine setup and startup code
 ├── menu.js           # Mode selection
 ├── ready.js          # Countdown overlay
