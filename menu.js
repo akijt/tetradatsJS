@@ -1,98 +1,87 @@
 class Menu extends Screen {
-    constructor(index) {
-        super();
-        this.index = index;
+    constructor(engine, game) {
+        super(engine);
+        this.game = game;
         this.mode = '';
     }
 
     update(current_time) {
     }
 
-    render(current_time, w, h, size) {
+    render(current_time) {
+        const {w, h, tile_size, mid_x, mid_y} = this.engine;
+
+        // CLEAR SCREEN
+        this.engine.ctx.clearRect(0, 0, w, h);
+
         // PRINT TEXT
-        this.index.ctx.fillStyle = 'rgb(255, 255, 255)';
-        this.index.ctx.textBaseline = 'bottom';
-        this.index.ctx.textAlign = 'center';
-        this.index.ctx.font = `${size * 2}px Arial`;
-        this.index.ctx.fillText('TETRADATS', w / 2 + (0) * size, h / 2 + (-8) * size);
-        this.index.ctx.fillText(this.mode, w / 2 + (0) * size, h / 2 + (12) * size);
+        this.engine.ctx.fillStyle = 'rgb(255, 255, 255)';
+        this.engine.ctx.textBaseline = 'bottom';
+        this.engine.ctx.textAlign = 'center';
+        this.engine.ctx.font = `${tile_size * 2}px Arial`;
+        this.engine.ctx.fillText('TETRADATS', mid_x + (0) * tile_size, mid_y + (-8) * tile_size); // Rename to TETRAPADATS or TETRAPADKI
+        this.engine.ctx.fillText(this.mode, mid_x + (0) * tile_size, mid_y + (12) * tile_size);
 
         // PRINT BUTTONS
-        this.index.ctx.beginPath();
-        this.index.ctx.strokeStyle = 'rgb(255, 255, 255)';
-        this.index.ctx.lineWidth = size / 8;
-        this.index.ctx.rect(w / 2 + (-4) * size, h / 2 + (-4) * size, 2 * size, 2 * size);
-        this.index.ctx.rect(w / 2 + (-1) * size, h / 2 + (-4) * size, 2 * size, 2 * size);
-        this.index.ctx.rect(w / 2 + (2) * size, h / 2 + (-4) * size, 2 * size, 2 * size);
-        this.index.ctx.rect(w / 2 + (-1) * size, h / 2 + (-1) * size, 2 * size, 2 * size);
-        this.index.ctx.rect(w / 2 + (-4) * size, h / 2 + (2) * size, 2 * size, 2 * size);
-        this.index.ctx.rect(w / 2 + (-1) * size, h / 2 + (2) * size, 2 * size, 2 * size);
-        this.index.ctx.rect(w / 2 + (2) * size, h / 2 + (2) * size, 2 * size, 2 * size);
-        this.index.ctx.stroke();
-        this.index.ctx.closePath();
+        this.engine.ctx.beginPath();
+        this.engine.ctx.strokeStyle = 'rgb(255, 255, 255)';
+        this.engine.ctx.lineWidth = tile_size / 8;
+        this.engine.ctx.rect(mid_x + (-4) * tile_size, mid_y + (-4) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.rect(mid_x + (-1) * tile_size, mid_y + (-4) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.rect(mid_x + (2) * tile_size, mid_y + (-4) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.rect(mid_x + (-1) * tile_size, mid_y + (-1) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.rect(mid_x + (-4) * tile_size, mid_y + (2) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.rect(mid_x + (-1) * tile_size, mid_y + (2) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.rect(mid_x + (2) * tile_size, mid_y + (2) * tile_size, 2 * tile_size, 2 * tile_size);
+        this.engine.ctx.stroke();
     }
 
     keyDownHandler(e, current_time) {
-        switch (e.key) {
-            case this.index.bindings['quit']:
-                break;
-            case this.index.bindings['reset']:
-                this.index.mode = 'marathon';
-                this.index.level = 1;
-                this.index.game.reset(this.index.handling, this.index.mode, this.index.level, this.index.get_key_hold(), current_time);
-                new Ready(this.index, current_time).enter_state();
-                break;
-            case this.index.bindings['hold']:
-                break;
-            case this.index.bindings['move_left']:
-                break;
-            case this.index.bindings['move_right']:
-                break;
-            case this.index.bindings['rotate_cw']:
-                break;
-            case this.index.bindings['rotate_180']:
-                break;
-            case this.index.bindings['rotate_ccw']:
-                break;
-            case this.index.bindings['soft_drop']:
-                break;
-            case this.index.bindings['hard_drop']:
+        switch (e.code) {
+            case this.game.bindings['reset']:
+                document.body.style.cursor = 'default';
+                this.game.set_mode('marathon');
+                this.game.set_level(1);
+                this.game.reset(current_time);
+                new Play(this.engine, this.game).enter_state(current_time);
+                new Ready(this.engine, this.game).enter_state(current_time);
                 break;
         }
     }
 
-    keyUpHandler(e, current_time) {
-    }
-
-    clickHandler(e, current_time, w, h, size) {
+    clickHandler(e, current_time) {
         if (this.mode != '') {
             document.body.style.cursor = 'default';
-            this.index.mode = this.mode;
-            this.index.game.reset(this.index.handling, this.index.mode, this.index.level, this.index.get_key_hold(), current_time);
-            new Ready(this.index, current_time).enter_state();
+            this.game.set_mode(this.mode);
+            this.game.set_level(1);
+            this.game.reset(current_time);
+            new Play(this.engine, this.game).enter_state(current_time);
+            new Ready(this.engine, this.game).enter_state(current_time);
         }
     }
 
-    moveHandler(e, current_time, w, h, size) {
+    moveHandler(e, current_time) {
+        const {w, h, tile_size, mid_x, mid_y} = this.engine;
+
         this.mode = '';
-        if (h / 2 + (-4) * size < e.clientY && e.clientY < h / 2 + (-2) * size) {
-            if (w / 2 + (-4) * size < e.clientX && e.clientX < w / 2 + (-2) * size) {
+        if (mid_y + (-4) * tile_size < e.clientY && e.clientY < mid_y + (-2) * tile_size) {
+            if (mid_x + (-4) * tile_size < e.clientX && e.clientX < mid_x + (-2) * tile_size) {
                 this.mode = 'marathon';
-            } else if (w / 2 + (-1) * size < e.clientX && e.clientX < w / 2 + (1) * size) {
+            } else if (mid_x + (-1) * tile_size < e.clientX && e.clientX < mid_x + (1) * tile_size) {
                 this.mode = 'sprint';
-            } else if (w / 2 + (2) * size < e.clientX && e.clientX < w / 2 + (4) * size) {
+            } else if (mid_x + (2) * tile_size < e.clientX && e.clientX < mid_x + (4) * tile_size) {
                 this.mode = 'blitz';
             }
-        } else if (h / 2 + (-1) * size < e.clientY && e.clientY < h / 2 + (1) * size) {
-            if (w / 2 + (-1) * size < e.clientX && e.clientX < w / 2 + (1) * size) {
+        } else if (mid_y + (-1) * tile_size < e.clientY && e.clientY < mid_y + (1) * tile_size) {
+            if (mid_x + (-1) * tile_size < e.clientX && e.clientX < mid_x + (1) * tile_size) {
                 this.mode = 'classic';
             }
-        } else if (h / 2 + (2) * size < e.clientY && e.clientY < h / 2 + (4) * size) {
-            if (w / 2 + (-4) * size < e.clientX && e.clientX < w / 2 + (-2) * size) {
+        } else if (mid_y + (2) * tile_size < e.clientY && e.clientY < mid_y + (4) * tile_size) {
+            if (mid_x + (-4) * tile_size < e.clientX && e.clientX < mid_x + (-2) * tile_size) {
                 this.mode = 'cheese';
-            } else if (w / 2 + (-1) * size < e.clientX && e.clientX < w / 2 + (1) * size) {
+            } else if (mid_x + (-1) * tile_size < e.clientX && e.clientX < mid_x + (1) * tile_size) {
                 this.mode = 'finesse';
-            } else if (w / 2 + (2) * size < e.clientX && e.clientX < w / 2 + (4) * size) {
+            } else if (mid_x + (2) * tile_size < e.clientX && e.clientX < mid_x + (4) * tile_size) {
                 this.mode = '4-wide';
             }
         }

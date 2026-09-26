@@ -1,44 +1,3 @@
-class Screen {
-    constructor(index) {
-        this.index = index;
-    }
-
-    enter_state() {
-        this.index.state_stack.push(this);
-        if (this.index.state_stack.length > 1) {
-            this.prev_state = this.index.state_stack[this.index.state_stack.length - 2]
-        }
-    }
-
-    exit_state() {
-        this.index.state_stack.pop();
-    }
-
-    update(current_time) {
-        console.error('update not implemented')
-    }
-
-    render(current_time, w, h, size) {
-        console.error('render not implemented')
-    }
-
-    keyDownHandler(e, current_time) {
-        console.error('keyDownHandler not implemented')
-    }
-
-    keyUpHandler(e, current_time) {
-        console.error('keyUpHandler not implemented')
-    }
-
-    clickHandler(e, current_time, w, h, size) {
-        console.error('clickHandler not implemented')
-    }
-
-    moveHandler(e, current_time, w, h, size) {
-        console.error('moveHandler not implemented')
-    }
-}
-
 class Tetris {
     constructor() {
         this.minos = {'i': [[[0, 2], [1, 2], [2, 2], [3, 2]], [[2, 0], [2, 1], [2, 2], [2, 3]], [[0, 1], [1, 1], [2, 1], [3, 1]], [[1, 0], [1, 1], [1, 2], [1, 3]]],
@@ -119,25 +78,52 @@ class Tetris {
                            't-spin null', 't-spin single', 't-spin double', 't-spin triple',
                            'perfect clear single', 'perfect clear double', 'perfect clear triple',
                            'perfect clear tetris', 'max b2b', 'max combo'];
+
+        this.colors = {'z': 'rgb(255,   0,   0)',
+                       'l': 'rgb(255, 165,   0)',
+                       'o': 'rgb(255, 255,   0)',
+                       's': 'rgb(  0, 255,   0)',
+                       'i': 'rgb(  0, 255, 255)',
+                       'j': 'rgb(  0,   0, 255)',
+                       't': 'rgb(160,  32, 240)', 
+                       'x': 'rgb(127, 127, 127)'};
+        this.mode = '';
+        this.level = 0;
+        this.bindings = {'quit'      : 'KeyQ',
+                         'reset'     : 'KeyR',
+                         'hold'      : 'KeyF',
+                         'move_left' : 'KeyM',
+                         'move_right': 'Period',
+                         'rotate_cw' : 'KeyD',
+                         'rotate_180': 'KeyA',
+                         'rotate_ccw': 'KeyS',
+                         'soft_drop' : 'Comma',
+                         'hard_drop' : 'Space'};
+        this.handling = {'DAS': 100, 'ARR': 0, 'SDF': 0};
     }
 
     shuffle(a, duplicates) {
-        // return new Array(7).fill('i') // for single piece finesse practice
+        if (duplicates) return Array.from({ length: a.length }, () => a[Math.floor(Math.random() * a.length)]);
         let arr = [...a];
-        if (duplicates) {
-            for (let i = 0; i < arr.length; i++) {
-                let j = Math.floor(Math.random() * arr.length);
-                arr[i] = a[j];
-            }
-        } else {
-            for (let i = arr.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                let temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-            }
+        for (let i = arr.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
         return arr;
+    }
+
+    set_mode(mode) {
+        this.mode = mode;
+    }
+
+    set_level(level) {
+        this.level = level;
+    }
+
+    set_handling(das, arr, sdf) {
+        this.handling['DAS'] = das;
+        this.handling['ARR'] = arr;
+        this.handling['SDF'] = sdf;
     }
 
     reset_mode(mode) {
@@ -171,16 +157,16 @@ class Tetris {
         }
     }
 
-    reset(handling, mode, level, key_hold_new, current_time) { // TODO: limit max gravity for classic mode
+    reset(current_time) { // TODO: limit max gravity for classic mode
         this.stats = {};
         this.stat_names.forEach(x => this.stats[x] = 0);
-        Object.keys(handling).forEach(x => this.stats[x] = handling[x]);
-        this.stats.mode = mode;
-        this.stats.level = level;
+        Object.keys(this.handling).forEach(x => this.stats[x] = this.handling[x]);
+        this.stats.mode = this.mode;
+        this.stats.level = this.level;
 
         let customizations = {'kick': true, 'r180': true, 'queue_type': 0, 'allow_hold': true, 'allow_hd': true, 'sd_type': 0, 'lock_type': 1, 'ghost': true, 'next': 3, 'target': false, 'cheese': 0, 'four_wide': false}
         this.customizations = JSON.parse(JSON.stringify(customizations));
-        this.reset_mode(mode);
+        this.reset_mode(this.mode);
         this.kicks = JSON.parse(JSON.stringify(this.all_kicks));
         if (!this.customizations.kick) ['t', 'i'].forEach(x => [0, 1, 2, 3].forEach(y => [0, 1, 2, 3].forEach(z => this.kicks[x][y][z] = [[0, 0]])));
         if (!this.customizations.r180) ['t', 'i'].forEach(x => [0, 1, 2, 3].forEach(y => this.kicks[x][y][(y + 2) % 4] = []));
@@ -195,12 +181,11 @@ class Tetris {
         this.combo = -1;
         this.last_clear = '';
         this.finesse_keys = 0;
-        this.finish = false;
-        this.lose = false;
+        this.finish = 0;
 
         this.add_cheese(this.customizations.cheese);
         if (this.customizations.four_wide) {
-            for (let r = 0; r < 20; r++) {
+            for (let r = 0; r < 40; r++) {
                 for (let c = 0; c < 10; c++) {
                     if (c < 3 || c > 6) this.board[r][c] = 'x';
                 }
@@ -211,12 +196,13 @@ class Tetris {
         }
 
         this.move_time = 0;
+        const key_hold_old = this.key_hold;
         this.key_hold = {'soft_drop': 0, 'move_left': 0, 'move_right': 0};
-        if (key_hold_new['soft_drop'] == 1) this.soft_drop(current_time);
-        if (key_hold_new['move_left'] == 1) this.move_press('move_left', 'move_right', current_time);
-        else if (key_hold_new['move_right'] == 1) this.move_press('move_right', 'move_left', current_time);
-        if (key_hold_new['move_left'] == 2) this.move_press('move_left', 'move_right', current_time);
-        else if (key_hold_new['move_right'] == 2) this.move_press('move_right', 'move_left', current_time);
+        if (key_hold_old['soft_drop'] == 1) this.soft_drop(current_time);
+        if (key_hold_old['move_left'] == 1) this.move_press('move_left', 'move_right', current_time);
+        else if (key_hold_old['move_right'] == 1) this.move_press('move_right', 'move_left', current_time);
+        if (key_hold_old['move_left'] == 2) this.move_press('move_left', 'move_right', current_time);
+        else if (key_hold_old['move_right'] == 2) this.move_press('move_right', 'move_left', current_time);
     }
 
     start(current_time) {
@@ -231,7 +217,7 @@ class Tetris {
         this.rotation = 0;
 
         if (this.collision()) {
-            this.lose = true;
+            this.finish = -1;
             return;
         }
         if (this.queue.length < 8) this.queue.push(...this.shuffle(this.bag, this.customizations.queue_type));
@@ -312,17 +298,16 @@ class Tetris {
 
     drop(distance, current_time) {
         distance = Math.min(distance, this.height);
-        if (distance > 0) {
-            this.position[1] -= distance;
-            this.set_height();
-            this.set_lock(current_time);
-            if (this.position[1] < this.lock_lowest) {
-                this.lock_lowest = this.position[1];
-                this.lock_count = 0;
-            }
-            this.stats.score += distance * this.key_hold['soft_drop'];
-            this.last_action = 'drop';
+        if (distance <= 0) return;
+        this.position[1] -= distance;
+        this.set_height();
+        this.set_lock(current_time);
+        if (this.position[1] < this.lock_lowest) {
+            this.lock_lowest = this.position[1];
+            this.lock_count = 0;
         }
+        this.stats.score += distance * this.key_hold['soft_drop'];
+        this.last_action = 'drop';
     }
 
     soft_drop(current_time) {
@@ -360,7 +345,7 @@ class Tetris {
 
     place(current_time) {
         if (this.minos[this.piece][this.rotation].every(d => this.position[1] + d[1] >= 20)) {
-            this.lose = true;
+            this.finish = -1;
             return;
         }
 
@@ -388,8 +373,10 @@ class Tetris {
         }
         let clear_count = 40 - rows;
         for (rows; rows < 40; rows++) {
-            this.board[rows] = new Array(10).fill(null);
-            if (this.customizations.four_wide) this.board[rows - 20] = ['x', 'x', 'x', null, null, null, null, 'x', 'x', 'x'];
+            if (this.customizations.four_wide)
+                this.board[rows] = ['x', 'x', 'x', null, null, null, null, 'x', 'x', 'x'];
+            else
+                this.board[rows] = new Array(10).fill(null);
         }
         this.add_cheese(cheese_cleared);
         let clear_string = {0: 'null', 1: 'single', 2: 'double', 3: 'triple', 4: 'tetris'}[clear_count]
@@ -424,7 +411,7 @@ class Tetris {
             }
         } else {
             this.combo = -1;
-            if (this.customizations.four_wide) this.lose = true;
+            if (this.customizations.four_wide) this.finish = -1;
         }
     }
 
@@ -454,7 +441,7 @@ class Tetris {
         if (this.customizations.target) {
             if (this.rotation % this.orientations[this.piece] != this.target.rotation % this.orientations[this.piece] || col != this.target.location) {
                 this.stats.pieces--;
-                this.lose = true;
+                this.finish = -1;
                 return;
             }
         }
@@ -470,26 +457,29 @@ class Tetris {
             this.stats.finesse++;
             if (this.customizations.target) {
                 this.stats.pieces--;
-                this.lose = true;
+                this.finish = -1;
             }
         }
     }
 
-    add_cheese(n) {
-        for (let r = 0; r < n; r++) {
-            if (this.board[39 - r].some(x => x != null)) {
-                this.lose = true;
+    add_cheese(n, aligned = false) {
+        if (n <= 0) return;
+        for (let r = 40 - n; r < 40; r++) {
+            if (this.board[r].some(x => x !== null)) {
+                this.finish = -1;
                 return;
             }
         }
-        for (let r = 39; r >= n; r--) {
-            this.board[r] = this.board[r - n];
-        }
-        for (let r = n - 1; r >= 0; r--) {
+        let aligned_gap = Math.floor(Math.random() * 10)
+        let new_cheese = [];
+        for (let i = 0; i < n; i++) {
             let row = new Array(10).fill('x');
-            row[Math.floor(Math.random() * 10)] = null;
-            this.board[r] = row;
+            let gap = aligned ? aligned_gap : Math.floor(Math.random() * 10)
+            row[gap] = null;
+            new_cheese.push(row);
         }
+        this.board.splice(40 - n, n);
+        this.board.unshift(...new_cheese);
     }
 
     set_height() {
@@ -582,12 +572,14 @@ class Tetris {
     }
 
     finish_check(current_time) {
-        this.finish = this.lose ||
-            (this.stats.mode == 'sprint' && this.stats.lines >= 40) ||
-            (this.stats.mode == 'blitz' && current_time - this.stats.time >= 120000);
-        if (this.finish) {
+        if (this.finish != -1) {
+            if ((this.stats.mode == 'sprint' && this.stats.lines >= 40) || (this.stats.mode == 'blitz' && current_time - this.stats.time >= 120000)) {
+                this.finish = 1;
+            }
+        }
+        if (this.finish != 0) {
             this.stats.time = current_time - this.stats.time;
-            if (['marathon', 'classic', 'finesse', '4-wide'].includes(this.stats.mode)) this.lose = false;
+            if (['marathon', 'classic', 'finesse', '4-wide'].includes(this.stats.mode)) this.finish = 1;
         }
     }
 
@@ -598,22 +590,29 @@ class Tetris {
         this.finish_check(current_time);
     }
 
-    pause(current_time, key_hold_new = null) {
+    pause(current_time) {
         this.stats.time = current_time - this.stats.time;
         this.gravity_time = current_time - this.gravity_time;
         // if (this.move_time > 0)
         //     this.move_time = current_time - this.move_time;
         if (this.lock_time > 0)
             this.lock_time = current_time - this.lock_time;
-        this.unsoft_drop();
-        this.move_unpress('move_left', 'move_right', current_time);
-        this.move_unpress('move_right', 'move_left', current_time);
-        if (key_hold_new) {
-            if (key_hold_new['soft_drop'] == 1) this.soft_drop(current_time);
-            if (key_hold_new['move_left'] == 1) this.move_press('move_left', 'move_right', current_time);
-            else if (key_hold_new['move_right'] == 1) this.move_press('move_right', 'move_left', current_time);
-            if (key_hold_new['move_left'] == 2) this.move_press('move_left', 'move_right', current_time);
-            else if (key_hold_new['move_right'] == 2) this.move_press('move_right', 'move_left', current_time);
+        if (this.paused) {
+            this.paused = false;
+            
+            const left = this.key_hold['move_left'];
+            const right = this.key_hold['move_right'];
+
+            this.key_hold['move_left'] = 0;
+            this.key_hold['move_right'] = 0;
+            this.move_time = 0;
+
+            if (left == 1) this.move_press('move_left', 'move_right', current_time);
+            else if (right == 1) this.move_press('move_right', 'move_left', current_time);
+            if (left == 2) this.move_press('move_left', 'move_right', current_time);
+            else if (right == 2) this.move_press('move_right', 'move_left', current_time);
+        } else {
+            this.paused = true;
         }
     }
 }
