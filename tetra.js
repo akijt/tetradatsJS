@@ -89,17 +89,17 @@ class Tetris {
                        'x': 'rgb(127, 127, 127)'};
         this.mode = '';
         this.level = 0;
-        this.bindings = {'quit'      : 'KeyQ',
+        this.bindings = {'quit'      : 'Escape',
                          'reset'     : 'KeyR',
-                         'hold'      : 'KeyF',
-                         'move_left' : 'KeyM',
-                         'move_right': 'Period',
-                         'rotate_cw' : 'KeyD',
-                         'rotate_180': 'KeyA',
-                         'rotate_ccw': 'KeyS',
-                         'soft_drop' : 'Comma',
-                         'hard_drop' : 'Space'};
-        this.handling = {'DAS': 100, 'ARR': 0, 'SDF': 0};
+                         'hold'      : 'KeyV',
+                         'move_left' : 'ArrowLeft',
+                         'move_right': 'ArrowRight',
+                         'rotate_cw' : 'KeyC',
+                         'rotate_180': 'KeyZ',
+                         'rotate_ccw': 'KeyX',
+                         'soft_drop' : 'ArrowDown',
+                         'hard_drop' : 'ArrowUp'};
+        this.handling = {'DAS': 150, 'ARR': 30, 'SDF': 20};
     }
 
     shuffle(a, duplicates) {
@@ -120,10 +120,12 @@ class Tetris {
         this.level = level;
     }
 
-    set_handling(das, arr, sdf) {
-        this.handling['DAS'] = das;
-        this.handling['ARR'] = arr;
-        this.handling['SDF'] = sdf;
+    set_bindings(bindings) {
+        Object.assign(this.bindings, bindings);
+    }
+
+    set_handling(handling) {
+        Object.assign(this.handling, handling);
     }
 
     reset_mode(mode) {

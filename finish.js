@@ -18,6 +18,7 @@ class Finish extends Screen {
         } else {
             this.result = 'GAME OVER';
         }
+        this.reset_key = this.game.bindings['reset'].replace(/^(Key|Digit|Arrow)/, '');
     }
 
     update(current_time) {
@@ -34,7 +35,7 @@ class Finish extends Screen {
         this.engine.ctx.textBaseline = 'bottom';
         this.engine.ctx.textAlign = 'center';
         this.engine.ctx.font = `${tile_size}px Arial`;
-        this.engine.ctx.fillText('press r to try again', mid_x + 0 * tile_size, mid_y + 0 * tile_size);
+        this.engine.ctx.fillText(`press ${this.reset_key} to try again`, mid_x + 0 * tile_size, mid_y + 0 * tile_size);
         this.engine.ctx.fillText(this.result, mid_x + 0 * tile_size, mid_y - 2 * tile_size);
     }
 

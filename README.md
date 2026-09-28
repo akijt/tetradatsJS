@@ -42,26 +42,24 @@ Built on top of the engine is a full block-stacking core with standard guideline
 
 | Action | Default Key |
 | :--- | :--- |
-| **Move Left** | `M` |
-| **Move Right** | `.` |
-| **Soft Drop** | `,` |
-| **Hard Drop** | `Space` |
-| **Rotate CW** | `D` |
-| **Rotate CCW** | `S` |
-| **Rotate 180°** | `A` |
-| **Hold Piece** | `F` |
+| **Move Left** | `Left` |
+| **Move Right** | `Right` |
+| **Soft Drop** | `Down` |
+| **Hard Drop** | `Up` |
+| **Rotate CW** | `C` |
+| **Rotate CCW** | `X` |
+| **Rotate 180°** | `Z` |
+| **Hold Piece** | `V` |
 | **Reset / Try Again** | `R` |
-| **Quit / Pause** | `Q` |
+| **Quit / Pause** | `Escape` |
 
 ### Default Handling Parameters
 
 | Parameter | Default Value | Unit | Description |
 | :--- | :--- | :--- | :--- |
-| **DAS** (Delayed Auto Shift) | `100` | ms | Delay before auto-repeat kicks in when holding a direction key |
-| **ARR** (Auto Repeat Rate) | `0` | ms / tile | Interval between subsequent tile moves (`0` = instant shift) |
-| **SDF** (Soft Drop Factor) | `0` | multiplier | Gravity multiplier during soft drop (`0` = instant drop) |
-
-> **Note on Customization:** Keybindings and handling (DAS, ARR, SDF) customization are fully supported in the underlying engine; in-game UI menus to customize these directly will be added in a future update.
+| **DAS** (Delayed Auto Shift) | `150` | ms | Delay before auto-repeat kicks in when holding a direction key |
+| **ARR** (Auto Repeat Rate) | `30` | ms / tile | Interval between subsequent tile moves (`0` = instant shift) |
+| **SDF** (Soft Drop Factor) | `20` | multiplier | Gravity multiplier during soft drop (`0` = instant drop) |
 
 ---
 
@@ -69,6 +67,8 @@ Built on top of the engine is a full block-stacking core with standard guideline
 
 No build tools or package managers required.
 
+- **Live Web Client:** Visit [https://akijt.github.io/tetradatsJS/](https://akijt.github.io/tetradatsJS/) to play immediately.
+- **Local Setup:**
 1. Clone or download the repository:
    ```bash
    git clone https://github.com/akijt/tetradats.git
@@ -88,15 +88,18 @@ No build tools or package managers required.
 ├── ready.js          # Countdown overlay
 ├── play.js           # Gameplay
 ├── pause.js          # Pause overlay
-└── finish.js         # End-game summary
+├── finish.js         # End-game summary
+└── settings.js       # Controls and handling customization
 ```
 
 ---
 
 ## Roadmap & To-Do
 
-- [ ] **In-Game Customization UI:** Add menu screen for keybinding remapping and live adjustment of handling settings (DAS, ARR, SDF).
+- [x] **In-Game Customization UI:** Add menu screen for keybinding remapping and live adjustment of handling settings (DAS, ARR, SDF).
 - [ ] **Engine Text Input System:** Finish the built-in `text_buffer` listener to support text input fields for player profiles and high score entries.
 - [ ] **Cheese Mode Win Condition:** Implement a target cleared-garbage counter so Cheese mode functions as a winnable time attack.
 - [ ] **Finesse Mode Win Condition:** Implement a timer so Finesse mode functions as a sprint competing for most pieces.
 - [ ] **Classic Mode Gravity:** Validate Classic mode gravity to better reflect traditional speeds.
+- [ ] **Fix Pixel Snapping:** Scale canvas resolution by DPR and adjust stroke offsets to eliminate anti-aliasing blur on all displays
+- [ ] **Inputs on Mobile**

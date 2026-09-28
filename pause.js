@@ -16,7 +16,7 @@ class Pause extends Screen {
         // PRINT BOARD
         this.engine.ctx.beginPath();
         this.engine.ctx.strokeStyle = 'rgb(255, 255, 255)';
-        this.engine.ctx.lineWidth = tile_size / 16;
+        this.engine.ctx.lineWidth = Math.ceil(tile_size / 16);
         for (let r = 0; r < 20; r++) {
             for (let c = 0; c < 10; c++) {
                 this.engine.ctx.rect(mid_x + (-5 + c) * tile_size, mid_y + (9 - r) * tile_size, tile_size, tile_size);
