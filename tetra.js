@@ -228,6 +228,9 @@ class Tetris { // TODO: review 180 kicks
         this.paused = false;
         this.stats.time = current_time;
         this.stats.keys = 0;
+
+        if (this.move_time) this.move_time = Math.max(this.move_time, current_time - this.stats.ARR);
+
         this.new_piece(this.queue.shift(), current_time);
     }
 
@@ -650,8 +653,6 @@ class Tetris { // TODO: review 180 kicks
         if (this.lock_time > 0)
             this.lock_time = current_time - this.lock_time;
         if (this.paused) {
-            this.paused = false;
-            
             const left = this.key_hold[0];
             const right = this.key_hold[2];
 
@@ -663,6 +664,8 @@ class Tetris { // TODO: review 180 kicks
             else if (right === 1) this.move_press(1, current_time);
             if (left === 2) this.move_press(-1, current_time);
             else if (right === 2) this.move_press(1, current_time);
+
+            this.paused = false; // needs to come after the move_press() calls
         } else {
             this.paused = true;
         }
