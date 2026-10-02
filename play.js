@@ -50,7 +50,7 @@ class Play extends Screen {
         this.engine.ctx.fillStyle = this.game.colors['x'];
         if (this.game.customizations.target) {
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = Tetris.MINOS[this.game.piece][this.game.target.rotation][i];
+                let [dc, dr] = Tetra.MINOS[this.game.piece][this.game.target.rotation][i];
                 let left = mid_x + (-5 + this.game.target.position[0] + dc) * tile_size;
                 let top = mid_y + (9 - this.game.target.position[1] - dr) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -61,7 +61,7 @@ class Play extends Screen {
         if (this.game.customizations.ghost) {
             this.engine.ctx.globalAlpha = 0.5;
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = Tetris.MINOS[this.game.piece][this.game.rotation][i];
+                let [dc, dr] = Tetra.MINOS[this.game.piece][this.game.rotation][i];
                 let left = mid_x + (-5 + this.game.position[0] + dc) * tile_size;
                 let top = mid_y + (9 - this.game.position[1] - dr + this.game.height) * tile_size;
                 this.engine.ctx.fillStyle = this.game.colors[this.game.piece];
@@ -73,7 +73,7 @@ class Play extends Screen {
         // PRINT CURRENT PIECE
         this.engine.ctx.fillStyle = this.game.colors[this.game.piece];
         for (let i = 0; i < 4; i++) {
-            let [dc, dr] = Tetris.MINOS[this.game.piece][this.game.rotation][i];
+            let [dc, dr] = Tetra.MINOS[this.game.piece][this.game.rotation][i];
             let left = mid_x + (-5 + this.game.position[0] + dc) * tile_size;
             let top = mid_y + (9 - this.game.position[1] - dr) * tile_size;
             this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -87,7 +87,7 @@ class Play extends Screen {
                 this.engine.ctx.fillStyle = this.game.colors[this.game.held];
             }
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = Tetris.MINOS[this.game.held][0][i];
+                let [dc, dr] = Tetra.MINOS[this.game.held][0][i];
                 let left = mid_x + (-10 + dc) * tile_size;
                 let top = mid_y + (-9 - dr) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -98,7 +98,7 @@ class Play extends Screen {
         for (let j = 0; j < this.game.customizations.next; j++) {
             this.engine.ctx.fillStyle = this.game.colors[this.game.queue[j]];
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = Tetris.MINOS[this.game.queue[j]][0][i];
+                let [dc, dr] = Tetra.MINOS[this.game.queue[j]][0][i];
                 let left = mid_x + (6 + dc) * tile_size;
                 let top = mid_y + (-9 - dr + 3 * j) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);

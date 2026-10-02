@@ -1,4 +1,4 @@
-class Tetris { // TODO: review 180 kicks
+class Tetra { // TODO: review 180 kicks
     static MINOS = {'i': [[[0, 2], [1, 2], [2, 2], [3, 2]], [[2, 0], [2, 1], [2, 2], [2, 3]], [[0, 1], [1, 1], [2, 1], [3, 1]], [[1, 0], [1, 1], [1, 2], [1, 3]]],
                     'j': [[[0, 2], [1, 2], [2, 2], [0, 3]], [[1, 1], [1, 2], [1, 3], [2, 3]], [[0, 2], [1, 2], [2, 2], [2, 1]], [[1, 1], [1, 2], [1, 3], [0, 1]]],
                     'l': [[[0, 2], [1, 2], [2, 2], [2, 3]], [[1, 1], [1, 2], [1, 3], [2, 1]], [[0, 2], [1, 2], [2, 2], [0, 1]], [[1, 1], [1, 2], [1, 3], [0, 3]]],
@@ -69,12 +69,12 @@ class Tetris { // TODO: review 180 kicks
     static ORIENTATIONS = {'o': 1, 'i': 2, 's': 2, 'z': 2, 'j': 4, 'l': 4, 't': 4};
     static STAT_NAMES = ['mode', 'time', 'score', 'pieces', 'lines', 'level',
                          'DAS', 'ARR', 'SDF', 'keys', 'holds', 'finesse',
-                         'single', 'double', 'triple', 'tetris',
+                         'single', 'double', 'triple', 'quad',
                          'mini t-spin null', 'mini t-spin single', 'mini t-spin double',
                          't-spin null', 't-spin single', 't-spin double', 't-spin triple',
                          'perfect clear single', 'perfect clear double', 'perfect clear triple',
-                         'perfect clear tetris', 'max b2b', 'max combo'];
-    static CLEAR_STRINGS     = {0: 'null', 1: 'single', 2: 'double', 3: 'triple', 4: 'tetris'};
+                         'perfect clear quad', 'max b2b', 'max combo'];
+    static CLEAR_STRINGS     = {0: 'null', 1: 'single', 2: 'double', 3: 'triple', 4: 'quad'};
     static PC_SCORES         = {1: 800, 2: 1200, 3: 1800, 4: 2000};
     static TSPIN_SCORES      = {0: 400, 1: 800,  2: 1200, 3: 1600};
     static MINI_TSPIN_SCORES = {0: 100, 1: 200,  2: 400};
@@ -191,19 +191,19 @@ class Tetris { // TODO: review 180 kicks
         this.board = [...new Array(40)].map(() => new Array(10).fill(null));
 
         this.stats = {};
-        Tetris.STAT_NAMES.forEach(x => this.stats[x] = 0);
+        Tetra.STAT_NAMES.forEach(x => this.stats[x] = 0);
         Object.keys(this.handling).forEach(x => this.stats[x] = this.handling[x]);
         this.stats.mode = this.mode;
         this.stats.level = this.level;
 
         this.customizations = {'kick': true, 'r180': true, 'queue_type': 0, 'allow_hold': true, 'allow_hd': true, 'sd_type': 0, 'lock_type': 1, 'ghost': true, 'next': 3, 'target': false, 'cheese': 0, 'four_wide': false};
         this.reset_mode();
-        this.kicks = structuredClone(Tetris.DEFAULT_KICKS);
+        this.kicks = structuredClone(Tetra.DEFAULT_KICKS);
         if (!this.customizations.kick) ['t', 'i'].forEach(x => [0, 1, 2, 3].forEach(y => [0, 1, 2, 3].forEach(z => this.kicks[x][y][z] = [[0, 0]])));
         if (!this.customizations.r180) ['t', 'i'].forEach(x => [0, 1, 2, 3].forEach(y => this.kicks[x][y][(y + 2) % 4] = []));
         
 
-        this.queue = this.shuffle(Object.keys(Tetris.MINOS), this.customizations.queue_type);
+        this.queue = this.shuffle(Object.keys(Tetra.MINOS), this.customizations.queue_type);
         this.held = null;
         this.hold_used = false;
         this.gravity = (0.8 - (this.stats.level - 1) * 0.007) ** (this.stats.level - 1) * 1000; // TODO: validate gravity
@@ -243,7 +243,7 @@ class Tetris { // TODO: review 180 kicks
             this.finish = -1;
             return;
         }
-        if (this.queue.length < 8) this.queue.push(...this.shuffle(Object.keys(Tetris.MINOS), this.customizations.queue_type));
+        if (this.queue.length < 8) this.queue.push(...this.shuffle(Object.keys(Tetra.MINOS), this.customizations.queue_type));
 
         this.gravity_time = current_time - this.gravity;
         this.lock_time = 0;
@@ -259,8 +259,8 @@ class Tetris { // TODO: review 180 kicks
     set_target() {
         this.target = {};
         this.target.rotation = Math.floor(Math.random() * 4);
-        this.target.location = Math.floor(Math.random() * Tetris.FINESSE[this.piece][this.target.rotation].length);
-        const minos_piece_rotation = Tetris.MINOS[this.piece][this.target.rotation];
+        this.target.location = Math.floor(Math.random() * Tetra.FINESSE[this.piece][this.target.rotation].length);
+        const minos_piece_rotation = Tetra.MINOS[this.piece][this.target.rotation];
         this.target.position = [
             this.target.location - Math.min(...minos_piece_rotation.map(x => x[0])),
             -Math.min(...minos_piece_rotation.map(x => x[1]))];
@@ -371,7 +371,7 @@ class Tetris { // TODO: review 180 kicks
     }
 
     place(current_time) {
-        if (Tetris.MINOS[this.piece][this.rotation].every(d => this.position[1] + d[1] >= 20)) {
+        if (Tetra.MINOS[this.piece][this.rotation].every(d => this.position[1] + d[1] >= 20)) {
             this.finish = -1;
             return;
         }
@@ -379,7 +379,7 @@ class Tetris { // TODO: review 180 kicks
         this.stats.pieces++;
         this.f_check();
         if (!this.customizations.target) {
-            Tetris.MINOS[this.piece][this.rotation].forEach(d => this.board[this.position[1] + d[1]][this.position[0] + d[0]] = this.piece);
+            Tetra.MINOS[this.piece][this.rotation].forEach(d => this.board[this.position[1] + d[1]][this.position[0] + d[0]] = this.piece);
             this.clear();
         }
         this.new_piece(this.queue.shift(), current_time);
@@ -407,7 +407,7 @@ class Tetris { // TODO: review 180 kicks
                 this.board[rows] = new Array(10).fill(null);
         }
         this.add_cheese(cheese_cleared);
-        const clear_string = Tetris.CLEAR_STRINGS[clear_count];
+        const clear_string = Tetra.CLEAR_STRINGS[clear_count];
         if (clear_count > 0) {
             if (clear_count === 4 || t_score >= 10) {
                 this.b2b++;
@@ -417,16 +417,16 @@ class Tetris { // TODO: review 180 kicks
             }
         }
         if (is_pc) {
-            this.stats.score += Tetris.PC_SCORES[clear_count] * ((this.b2b > 0) ? 1.6 : 1) * this.stats.level;
+            this.stats.score += Tetra.PC_SCORES[clear_count] * ((this.b2b > 0) ? 1.6 : 1) * this.stats.level;
             this.last_clear = `perfect clear ${clear_string}`;
         } else if (t_score > 10) {
-            this.stats.score += Tetris.TSPIN_SCORES[clear_count] * ((this.b2b > 0) ? 1.5 : 1) * this.stats.level;
+            this.stats.score += Tetra.TSPIN_SCORES[clear_count] * ((this.b2b > 0) ? 1.5 : 1) * this.stats.level;
             this.last_clear = `t-spin ${clear_string}`;
         } else if (t_score === 10) {
-            this.stats.score += Tetris.MINI_TSPIN_SCORES[clear_count] * ((this.b2b > 0) ? 1.5 : 1) * this.stats.level;
+            this.stats.score += Tetra.MINI_TSPIN_SCORES[clear_count] * ((this.b2b > 0) ? 1.5 : 1) * this.stats.level;
             this.last_clear = `mini t-spin ${clear_string}`;
         } else if (clear_count > 0) {
-            this.stats.score += Tetris.LINE_SCORES[clear_count] * ((this.b2b > 0) ? 1.5 : 1) * this.stats.level;
+            this.stats.score += Tetra.LINE_SCORES[clear_count] * ((this.b2b > 0) ? 1.5 : 1) * this.stats.level;
             this.last_clear = clear_string;
         }
         if (clear_count > 0 || t_score >= 10) this.stats[this.last_clear]++;
@@ -467,23 +467,23 @@ class Tetris { // TODO: review 180 kicks
     }
 
     f_check() {
-        const col = this.position[0] + Math.min(...Tetris.MINOS[this.piece][this.rotation].map(d => d[0]));
+        const col = this.position[0] + Math.min(...Tetra.MINOS[this.piece][this.rotation].map(d => d[0]));
         if (this.customizations.target) {
-            if (this.rotation % Tetris.ORIENTATIONS[this.piece] !== this.target.rotation % Tetris.ORIENTATIONS[this.piece] || col !== this.target.location) {
+            if (this.rotation % Tetra.ORIENTATIONS[this.piece] !== this.target.rotation % Tetra.ORIENTATIONS[this.piece] || col !== this.target.location) {
                 this.stats.pieces--;
                 this.finish = -1;
                 return;
             }
         }
         for (let i = 0; i < 4; i++) {
-            const [dc, dr] = Tetris.MINOS[this.piece][this.rotation][i];
+            const [dc, dr] = Tetra.MINOS[this.piece][this.rotation][i];
             const c = this.position[0] + dc;
             const r = this.position[1] + dr;
             for (let j = r + 1; j < 22; j++) {
                 if (this.board[j][c] !== null) return;
             }
         }
-        if (this.finesse_keys > Tetris.FINESSE[this.piece][this.rotation][col]) {
+        if (this.finesse_keys > Tetra.FINESSE[this.piece][this.rotation][col]) {
             this.stats.finesse++;
             if (this.customizations.target) {
                 this.stats.pieces--;
@@ -514,7 +514,7 @@ class Tetris { // TODO: review 180 kicks
 
     set_height() {
         const board = this.board;
-        const minos_piece_rotation = Tetris.MINOS[this.piece][this.rotation];
+        const minos_piece_rotation = Tetra.MINOS[this.piece][this.rotation];
         const pos_x = this.position[0];
         const pos_y = this.position[1];
 
@@ -539,7 +539,7 @@ class Tetris { // TODO: review 180 kicks
 
     collision() {
         const board = this.board;
-        const minos_piece_rotation = Tetris.MINOS[this.piece][this.rotation];
+        const minos_piece_rotation = Tetra.MINOS[this.piece][this.rotation];
         const pos_x = this.position[0];
         const pos_y = this.position[1];
 

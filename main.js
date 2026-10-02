@@ -2,6 +2,6 @@
 // console.error();
 
 const engine = new Engine();
-const game = new Tetris();
+const game = new Tetra();
 const menu = new Menu(engine, game);
 engine.run(menu);

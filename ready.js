@@ -42,7 +42,7 @@ class Ready extends Screen {
         for (let j = 0; j < this.game.customizations.next; j++) {
             this.engine.ctx.fillStyle = this.game.colors[this.game.queue[j]];
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = Tetris.MINOS[this.game.queue[j]][0][i];
+                let [dc, dr] = Tetra.MINOS[this.game.queue[j]][0][i];
                 let left = mid_x + (6 + dc) * tile_size;
                 let top = mid_y + (-9 - dr + 3 * j) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);

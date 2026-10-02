@@ -1,6 +1,6 @@
 # Tetradats
 
-A lightweight, custom-built HTML5 Canvas game engine powering a guideline-compliant block-stacking game. Built from scratch with an extensible stack-based state machine, direct input routing, and frame-accurate timing.
+A lightweight, custom-built HTML5 Canvas game engine powering a guideline-compliant block-stacking game. Built from scratch with a stack-based state machine, direct input routing, and frame-accurate timing.
 
 ---
 
@@ -8,7 +8,7 @@ A lightweight, custom-built HTML5 Canvas game engine powering a guideline-compli
 
 At the core of the project is a custom, zero-dependency 2D Canvas engine (`Engine`) that handles game states, input, and screen scaling:
 
-- **Stack-Based State Machine:** Screen states (`Menu`, `Play`, `Ready`, `Pause`, `Finish`) are pushed and popped on a central stack, allowing easy overlays and state transitions.
+- **Stack-Based State Machine:** Screen states (`Menu`, `Play`, `Ready`, `Pause`, `Finish`,`Settings`) are pushed and popped on a central stack, allowing easy overlays and state transitions.
 - **Unified Central Screen Metrics:** The engine calculates viewport numbers (`w`, `h`, `tile_size`, `mid_x`, `mid_y`) centrally. On window resize, grid tiles snap to integer values, so board cells render sharp and seamless *(note: integer snapping applies to grid tiles and layout math, not vector text.)*
 - **Direct Input Handling:** Tracks key states, mouse motion, and clicks, passing raw timestamps to active screen state handlers.
 - **Fixed Update Game Loop:** Uses a tick system with fallback handling to decouple logic updates from dynamic frame rendering (`requestAnimationFrame`).
@@ -30,7 +30,7 @@ Built on top of the engine is a full block-stacking core with standard guideline
 
 ### Guideline Features
 - **Super Rotation System (SRS):** Full standard rotation and kicks for all pieces.
-- **180° Flips:** Dedicated 180-degree rotation support.
+- **180° Flips:** Dedicated 180-degree rotation support, with minimal kicks.
 - **T-Spin Detection:** Accurately awards T-Spin Mini, T-Spin Single, Double, and Triple clears.
 - **Scoring System:** Includes Back-to-Back clear multipliers, combo scaling, and Perfect Clear bonuses.
 
@@ -67,11 +67,11 @@ Built on top of the engine is a full block-stacking core with standard guideline
 
 No build tools or package managers required.
 
-- **Live Web Client:** Visit [https://akijt.github.io/tetradatsJS/](https://akijt.github.io/tetradatsJS/) to play immediately.
+- **Live Web Client:** Visit [https://akijt.github.io/tetradatsJS/](https://akijt.github.io/tetradatsJS/) to play in you browser, no installation required.
 - **Local Setup:**
-1. Clone or download the repository:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/akijt/tetradats.git
+   git clone https://github.com/akijt/tetradatsJS.git
    ```
 2. Open `index.html` directly in any modern web browser.
 
