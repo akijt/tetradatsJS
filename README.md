@@ -1,4 +1,4 @@
-# Tetradats
+# Tetrapadats
 
 A lightweight, custom-built HTML5 Canvas game engine powering a guideline-compliant block-stacking game. Built from scratch with a stack-based state machine, direct input routing, and frame-accurate timing.
 
@@ -67,11 +67,11 @@ Built on top of the engine is a full block-stacking core with standard guideline
 
 No build tools or package managers required.
 
-- **Live Web Client:** Visit [https://akijt.github.io/tetradatsJS/](https://akijt.github.io/tetradatsJS/) to play in you browser, no installation required.
+- **Live Web Client:** Visit [https://akijt.github.io/tetrapadatsJS/](https://akijt.github.io/tetrapadatsJS/) to play in you browser, no installation required.
 - **Local Setup:**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/akijt/tetradatsJS.git
+   git clone https://github.com/akijt/tetrapadatsJS.git
    ```
 2. Open `index.html` directly in any modern web browser.
 
@@ -82,7 +82,7 @@ No build tools or package managers required.
 ```
 ├── index.html        # Canvas container and script loading order
 ├── engine.js         # Core Engine and Screen base classes
-├── tetra.js          # Tetradats core holding game state and update logic
+├── tetra.js          # Tetrapadats core holding game state and update logic
 ├── main.js           # Engine setup and startup code
 ├── menu.js           # Mode selection
 ├── ready.js          # Countdown overlay

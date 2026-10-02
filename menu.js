@@ -19,7 +19,7 @@ class Menu extends Screen {
         this.engine.ctx.textBaseline = 'bottom';
         this.engine.ctx.textAlign = 'center';
         this.engine.ctx.font = `${tile_size * 2}px Arial`;
-        this.engine.ctx.fillText('TETRADATS', mid_x + (0) * tile_size, mid_y + (-8) * tile_size); // Rename to TETRAPADATS or TETRAPADKI
+        this.engine.ctx.fillText('TETRAPADATS', mid_x + (0) * tile_size, mid_y + (-8) * tile_size); // Rename to TETRAPADKI?
         this.engine.ctx.fillText(this.selection, mid_x + (0) * tile_size, mid_y + (12) * tile_size);
 
         // PRINT BUTTONS
