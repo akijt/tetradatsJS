@@ -60,22 +60,22 @@ class Pause extends Screen {
     keyDownHandler(e, current_time) {
         switch (e.code) {
             case this.game.bindings['quit']:
-                this.game.pause(current_time);
+                this.game.on_pause(current_time);
                 this.exit_state();
                 break;
             case this.game.bindings['reset']:
-                this.game.reset(current_time);
+                this.game.on_reset(current_time);
                 this.exit_state();
                 new Ready(this.engine, this.game).enter_state(current_time);
                 break;
             case this.game.bindings['move_left']:
-                this.game.move_press('move_left', 'move_right', current_time);
+                this.game.on_move_left_press(current_time);
                 break;
             case this.game.bindings['move_right']:
-                this.game.move_press('move_right', 'move_left', current_time);
+                this.game.on_move_right_press(current_time);
                 break;
             case this.game.bindings['soft_drop']:
-                this.game.soft_drop(current_time);
+                this.game.on_soft_drop_press(current_time);
                 break;
         }
     }
@@ -83,13 +83,13 @@ class Pause extends Screen {
     keyUpHandler(e, current_time) {
         switch (e.code) {
             case this.game.bindings['move_left']:
-                this.game.move_unpress('move_left', 'move_right', current_time);
+                this.game.on_move_left_unpress(current_time);
                 break;
             case this.game.bindings['move_right']:
-                this.game.move_unpress('move_right', 'move_left', current_time);
+                this.game.on_move_right_unpress(current_time);
                 break;
             case this.game.bindings['soft_drop']:
-                this.game.unsoft_drop();
+                this.game.on_soft_drop_unpress(current_time);
                 break;
         }
     }

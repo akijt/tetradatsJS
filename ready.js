@@ -42,7 +42,7 @@ class Ready extends Screen {
         for (let j = 0; j < this.game.customizations.next; j++) {
             this.engine.ctx.fillStyle = this.game.colors[this.game.queue[j]];
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = this.game.minos[this.game.queue[j]][0][i];
+                let [dc, dr] = Tetris.MINOS[this.game.queue[j]][0][i];
                 let left = mid_x + (6 + dc) * tile_size;
                 let top = mid_y + (-9 - dr + 3 * j) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -93,17 +93,17 @@ class Ready extends Screen {
                 this.exit_state(2);
                 break;
             case this.game.bindings['reset']:
-                this.game.reset(current_time);
+                this.game.on_reset(current_time);
                 this.enter_time = current_time;
                 break;
             case this.game.bindings['move_left']:
-                this.game.move_press('move_left', 'move_right', current_time);
+                this.game.on_move_left_press(current_time);
                 break;
             case this.game.bindings['move_right']:
-                this.game.move_press('move_right', 'move_left', current_time);
+                this.game.on_move_right_press(current_time);
                 break;
             case this.game.bindings['soft_drop']:
-                this.game.soft_drop(current_time);
+                this.game.on_soft_drop_press(current_time);
                 break;
         }
     }
@@ -111,13 +111,13 @@ class Ready extends Screen {
     keyUpHandler(e, current_time) {
         switch (e.code) {
             case this.game.bindings['move_left']:
-                this.game.move_unpress('move_left', 'move_right', current_time);
+                this.game.on_move_left_unpress(current_time);
                 break;
             case this.game.bindings['move_right']:
-                this.game.move_unpress('move_right', 'move_left', current_time);
+                this.game.on_move_right_unpress(current_time);
                 break;
             case this.game.bindings['soft_drop']:
-                this.game.unsoft_drop();
+                this.game.on_soft_drop_unpress(current_time);
                 break;
         }
     }

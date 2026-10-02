@@ -50,7 +50,7 @@ class Play extends Screen {
         this.engine.ctx.fillStyle = this.game.colors['x'];
         if (this.game.customizations.target) {
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = this.game.minos[this.game.piece][this.game.target.rotation][i];
+                let [dc, dr] = Tetris.MINOS[this.game.piece][this.game.target.rotation][i];
                 let left = mid_x + (-5 + this.game.target.position[0] + dc) * tile_size;
                 let top = mid_y + (9 - this.game.target.position[1] - dr) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -61,7 +61,7 @@ class Play extends Screen {
         if (this.game.customizations.ghost) {
             this.engine.ctx.globalAlpha = 0.5;
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = this.game.minos[this.game.piece][this.game.rotation][i];
+                let [dc, dr] = Tetris.MINOS[this.game.piece][this.game.rotation][i];
                 let left = mid_x + (-5 + this.game.position[0] + dc) * tile_size;
                 let top = mid_y + (9 - this.game.position[1] - dr + this.game.height) * tile_size;
                 this.engine.ctx.fillStyle = this.game.colors[this.game.piece];
@@ -73,7 +73,7 @@ class Play extends Screen {
         // PRINT CURRENT PIECE
         this.engine.ctx.fillStyle = this.game.colors[this.game.piece];
         for (let i = 0; i < 4; i++) {
-            let [dc, dr] = this.game.minos[this.game.piece][this.game.rotation][i];
+            let [dc, dr] = Tetris.MINOS[this.game.piece][this.game.rotation][i];
             let left = mid_x + (-5 + this.game.position[0] + dc) * tile_size;
             let top = mid_y + (9 - this.game.position[1] - dr) * tile_size;
             this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -87,7 +87,7 @@ class Play extends Screen {
                 this.engine.ctx.fillStyle = this.game.colors[this.game.held];
             }
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = this.game.minos[this.game.held][0][i];
+                let [dc, dr] = Tetris.MINOS[this.game.held][0][i];
                 let left = mid_x + (-10 + dc) * tile_size;
                 let top = mid_y + (-9 - dr) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -98,7 +98,7 @@ class Play extends Screen {
         for (let j = 0; j < this.game.customizations.next; j++) {
             this.engine.ctx.fillStyle = this.game.colors[this.game.queue[j]];
             for (let i = 0; i < 4; i++) {
-                let [dc, dr] = this.game.minos[this.game.queue[j]][0][i];
+                let [dc, dr] = Tetris.MINOS[this.game.queue[j]][0][i];
                 let left = mid_x + (6 + dc) * tile_size;
                 let top = mid_y + (-9 - dr + 3 * j) * tile_size;
                 this.engine.ctx.fillRect(left, top, tile_size, tile_size);
@@ -141,38 +141,36 @@ class Play extends Screen {
     keyDownHandler(e, current_time) {
         switch (e.code) {
             case this.game.bindings['quit']:
-                this.game.pause(current_time);
+                this.game.on_pause(current_time);
                 new Pause(this.engine, this.game).enter_state(current_time);
                 break;
             case this.game.bindings['reset']:
-                this.game.reset(current_time);
+                this.game.on_reset(current_time);
                 new Ready(this.engine, this.game).enter_state(current_time);
                 break;
             case this.game.bindings['hold']:
-                this.game.hold(current_time);
+                this.game.on_hold(current_time);
                 break;
             case this.game.bindings['move_left']:
-                this.game.move(-1, current_time);
-                this.game.move_press('move_left', 'move_right', current_time);
+                this.game.on_move_left_press(current_time);
                 break;
             case this.game.bindings['move_right']:
-                this.game.move(1, current_time);
-                this.game.move_press('move_right', 'move_left', current_time);
+                this.game.on_move_right_press(current_time);
                 break;
             case this.game.bindings['rotate_cw']:
-                this.game.rotate(1, current_time);
+                this.game.on_rotate_cw(current_time);
                 break;
             case this.game.bindings['rotate_180']:
-                this.game.rotate(2, current_time);
+                this.game.on_rotate_180(current_time);
                 break;
             case this.game.bindings['rotate_ccw']:
-                this.game.rotate(3, current_time);
+                this.game.on_rotate_ccw(current_time);
                 break;
             case this.game.bindings['soft_drop']:
-                this.game.soft_drop(current_time);
+                this.game.on_soft_drop_press(current_time);
                 break;
             case this.game.bindings['hard_drop']:
-                this.game.hard_drop(current_time);
+                this.game.on_hard_drop(current_time);
                 break;
         }
     }
@@ -180,13 +178,13 @@ class Play extends Screen {
     keyUpHandler(e, current_time) {
         switch (e.code) {
             case this.game.bindings['move_left']:
-                this.game.move_unpress('move_left', 'move_right', current_time);
+                this.game.on_move_left_unpress(current_time);
                 break;
             case this.game.bindings['move_right']:
-                this.game.move_unpress('move_right', 'move_left', current_time);
+                this.game.on_move_right_unpress(current_time);
                 break;
             case this.game.bindings['soft_drop']:
-                this.game.unsoft_drop();
+                this.game.on_soft_drop_unpress(current_time);
                 break;
         }
     }
