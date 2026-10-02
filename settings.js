@@ -83,8 +83,21 @@ class Settings extends Screen {
         this.engine.ctx.arc(mid_x + (norm_sdf * (11 - 1) + 1) * tile_size, mid_y + (5) * tile_size, .5 * tile_size, 0, 2 * Math.PI);
         this.engine.ctx.fill();
 
+        // PRINT BACK
+        this.engine.ctx.save();
+        this.engine.ctx.lineWidth = Math.ceil(tile_size / 4);
+        this.engine.ctx.lineJoin = 'round';
+        this.engine.ctx.beginPath();
+        this.engine.ctx.moveTo(mid_x + (-12) * tile_size, mid_y + (-10.00) * tile_size);
+        this.engine.ctx.lineTo(mid_x + (-12) * tile_size, mid_y + (-8.50) * tile_size);
+        this.engine.ctx.lineTo(mid_x + (-13.4) * tile_size, mid_y + (-9.25) * tile_size);
+        this.engine.ctx.closePath();
+        this.engine.ctx.stroke();
+        this.engine.ctx.fill();
+        this.engine.ctx.restore();
+
         // PRINT GEARS
-        for (let x= -7; x <= 7; x += 14) {
+        for (let x = -7; x <= 7; x += 14) {
             const tooth_size = 0.4;
             const gear_x = mid_x + (x) * tile_size;
             const gear_y = mid_y + (-9.25) * tile_size;
@@ -135,9 +148,8 @@ class Settings extends Screen {
     keyDownHandler(e, current_time) {
         if (this.last_binding) {
             for (const [action, code] of Object.entries(this.game.bindings)) {
-                if (code === e.code) {
+                if (code === e.code)
                     this.game.set_bindings({[action]: '##########'});
-                }
             }
             this.game.set_bindings({[this.selection]: e.code});
             this.last_binding = null;
@@ -145,11 +157,10 @@ class Settings extends Screen {
         }
         switch (e.code) {
             case this.game.bindings['quit']:
-                if (Object.values(this.game.bindings).includes('##########')) {
+                if (Object.values(this.game.bindings).includes('##########'))
                     this.flash_time = current_time + 3000;
-                    break;
-                }
-                this.exit_state();
+                else
+                    this.exit_state();
                 break;
         }
     }
@@ -158,6 +169,11 @@ class Settings extends Screen {
         if (this.last_binding) {
             this.game.set_bindings({[this.selection]: this.last_binding});
             this.last_binding = null;
+        } else if (this.selection === 'back') {
+            if (Object.values(this.game.bindings).includes('##########'))
+                this.flash_time = current_time + 3000;
+            else
+                this.exit_state();
         } else if (this.selection === 'developer') {
             document.body.style.cursor = 'default';
             this.game.set_bindings({'quit'      : 'KeyQ',
@@ -193,8 +209,7 @@ class Settings extends Screen {
                         break;
                     }
                 }
-            }
-            if (mid_x + (1) * tile_size < e.clientX && e.clientX < mid_x + (11) * tile_size) {
+            } else if (mid_x + (1) * tile_size < e.clientX && e.clientX < mid_x + (11) * tile_size) {
                 if (mid_y + (-6) * tile_size < e.clientY && e.clientY < mid_y + (-4) * tile_size)
                     this.selection = 'DAS';
                 if (mid_y + (-1) * tile_size < e.clientY && e.clientY < mid_y + (1) * tile_size)
@@ -202,7 +217,10 @@ class Settings extends Screen {
                 if (mid_y + (4) * tile_size < e.clientY && e.clientY < mid_y + (6) * tile_size)
                     this.selection = 'SDF';
             }
-            if (mid_x + (6) * tile_size < e.clientX && e.clientX < mid_x + (8) * tile_size) {
+            if (mid_x + (-14) * tile_size < e.clientX && e.clientX < mid_x + (-12) * tile_size) {
+                if (mid_y + (-10.25) * tile_size < e.clientY && e.clientY < mid_y + (-8.25) * tile_size)
+                    this.selection = 'back';
+            } else if (mid_x + (6) * tile_size < e.clientX && e.clientX < mid_x + (8) * tile_size) {
                 if (mid_y + (-10.25) * tile_size < e.clientY && e.clientY < mid_y + (-8.25) * tile_size)
                     this.selection = 'developer';
             }
